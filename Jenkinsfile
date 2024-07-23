@@ -2,13 +2,18 @@ pipeline {
     agent any
     tools {
         nodejs 'Node' // Nombre de la herramienta NodeJS configurada en Jenkins
+        git 'Default' // Asegúrate de que Git esté configurado correctamente
+    }
+    
+    environment {
+        PATH = "${PATH}:${NODE_HOME}/bin"
     }
     
     stages {
         stage('Checkout') {
             steps {
                 // Clona el repositorio desde GitHub
-                git 'https://github.com/gonzabgarcia/Cypress.git'
+                git url: 'https://github.com/gonzabgarcia/Cypress.git', branch: 'main', credentialsId: 'jenkinstoken'
             }
         }
         stage('Install Dependencies') {
@@ -37,15 +42,25 @@ pipeline {
                 }
             }
         }
-        stage('Archive Results') {
+        stage('Generate Reports') {
             steps {
-                // Archiva los resultados de los tests (ajusta la ruta según tu configuración)
-                junit '**/results/*.xml'
+                script {
+                    sh 'npx mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/mochawesome/mochawesome.json'
+                    sh 'npx marge cypress/reports/mochawesome/mochawesome.json --reportDir cypress/reports/mochawesome --inline'
+                    sh 'npx allure generate cypress/reports/allure-results --clean -o cypress/reports/allure-report'
+                }
             }
         }
     }
     post {
         always {
+            archiveArtifacts artifacts: 'cypress/reports/**/*', allowEmptyArchive: true
+            publishHTML(target: [
+                reportDir: 'cypress/reports/mochawesome',
+                reportFiles: 'mochawesome.html',
+                reportName: 'Mochawesome Report'
+            ])
+            allure includeProperties: false, jdk: '', results: [[path: 'cypress/reports/allure-results']]
             // Limpiar archivos temporales, si es necesario
             cleanWs()
         }

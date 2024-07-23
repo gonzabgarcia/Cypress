@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {
         nodejs 'Node' // Nombre de la herramienta NodeJS configurada en Jenkins
-        git 'Git'   // Configura Git si es necesario
     }
     stages {
         stage('Checkout') {

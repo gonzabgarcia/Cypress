@@ -1,7 +1,6 @@
 pipeline {
     agent any
     tools {
-        // Configura las herramientas necesarias
         nodejs 'Node' // Nombre de la herramienta NodeJS configurada en Jenkins
         git 'Git'   // Configura Git si es necesario
     }
@@ -22,8 +21,11 @@ pipeline {
                     sh 'node -v'
                     sh 'npm -v'
 
-                    // Instala Cypress localmente
+                    // Instala las dependencias del proyecto, incluyendo Cypress si está en package.json
                     sh 'npm install'
+
+                    // Si Cypress no está en package.json, instálalo explícitamente
+                    sh 'npm install cypress --save-dev'
                 }
             }
         }

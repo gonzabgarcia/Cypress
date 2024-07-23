@@ -2,35 +2,44 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node' // Asegúrate de que el nombre coincida con el configurado en Jenkins
+        nodejs "Node" // Asegúrate de que "NodeJS" esté configurado en Global Tool Configuration
+        git "Default"   // Usa la configuración por defecto de Git
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/gonzabgarcia/Cypress.git'
+                git url: 'https://github.com/gonzabgarcia/Cypress.git', branch: 'main'
             }
         }
-        stage('Verify Node.js Version') {
-            steps {
-                sh 'node -v'
-                sh 'npm -v'
-            }
-        }
+        
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                script {
+                    def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    withEnv(["PATH+NODE=${nodeHome}/bin"]) {
+                        sh 'npm install'
+                    }
+                }
             }
         }
+        
         stage('Run Tests') {
             steps {
-                sh 'npx cypress run --reporter junit --reporter-options "mochaFile=results/test-output-[hash].xml"'
+                script {
+                    def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    withEnv(["PATH+NODE=${nodeHome}/bin"]) {
+                        sh 'npx cypress run'
+                    }
+                }
             }
         }
     }
+    
     post {
         always {
-            junit '**/results/*.xml'
+            junit 'cypress/results/*.xml'
+            archiveArtifacts artifacts: 'cypress/screenshots/**/*', allowEmptyArchive: true
         }
     }
 }

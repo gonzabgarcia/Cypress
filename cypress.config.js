@@ -7,14 +7,14 @@ module.exports = defineConfig({
     reporterOptions: {
       reportDir: 'cypress/reports',
       reportFilename: 'report',
-      overwrite: false,
+      overwrite: false, // Si deseas que el reporte anterior no se sobrescriba
       html: false,
-      json: true},
+      json: true
+    },
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {
       allureWriter(on, config);
       return config;
-      // implement node event listeners here
     },
   },
 });

@@ -3,9 +3,7 @@ pipeline {
     tools {
         nodejs 'Node' // Nombre de la herramienta NodeJS configurada en Jenkins
     }
-        environment {
-        GIT_CREDENTIALS = credentials('jenkinstoken')
-    }
+    
     stages {
         stage('Checkout') {
             steps {

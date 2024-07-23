@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         nodejs "Node" // Asegúrate de que "NodeJS" esté configurado en Global Tool Configuration
-        git "Default"   // Usa la configuración por defecto de Git
+        git "Git"   // Usa la configuración por defecto de Git
     }
 
     stages {

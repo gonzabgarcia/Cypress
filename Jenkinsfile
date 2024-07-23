@@ -1,45 +1,57 @@
 pipeline {
     agent any
-
     tools {
-        nodejs "Node" // Asegúrate de que "NodeJS" esté configurado en Global Tool Configuration
-        git "Git"   // Usa la configuración por defecto de Git
+        // Configura las herramientas necesarias
+        nodejs 'Node' // Nombre de la herramienta NodeJS configurada en Jenkins
+        git 'Git'   // Configura Git si es necesario
     }
-
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/gonzabgarcia/Cypress.git', branch: 'main'
+                // Clona el repositorio desde GitHub
+                git 'https://github.com/gonzabgarcia/Cypress.git'
             }
         }
-        
         stage('Install Dependencies') {
             steps {
                 script {
-                    def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                    withEnv(["PATH+NODE=${nodeHome}/bin"]) {
-                        sh 'npm install'
-                    }
+                    // Instala npm (solo si no está preinstalado)
+                    sh 'curl -fsSL https://install-node.now.sh/lts | bash'
+                    
+                    // Verifica la instalación de npm y Node.js
+                    sh 'node -v'
+                    sh 'npm -v'
+
+                    // Instala Cypress localmente
+                    sh 'npm install'
                 }
             }
         }
-        
         stage('Run Tests') {
             steps {
                 script {
-                    def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                    withEnv(["PATH+NODE=${nodeHome}/bin"]) {
-                        sh 'npx cypress run'
-                    }
+                    // Ejecuta Cypress usando npx
+                    sh 'npx cypress run'
                 }
             }
         }
+        stage('Archive Results') {
+            steps {
+                // Archiva los resultados de los tests (ajusta la ruta según tu configuración)
+                junit '**/results/*.xml'
+            }
+        }
     }
-    
     post {
         always {
-            junit 'cypress/results/*.xml'
-            archiveArtifacts artifacts: 'cypress/screenshots/**/*', allowEmptyArchive: true
+            // Limpiar archivos temporales, si es necesario
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs for more details.'
         }
     }
 }

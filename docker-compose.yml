@@ -1,0 +1,26 @@
+version: '2.29.1'  # Ajusta la versión si es necesario
+
+services:
+  frontend:
+    build:
+      context: ../frontend-qa-automation  # Ajusta la ruta si es necesario
+    ports:
+      - "3000:3000"
+    # Espera a que el frontend esté listo antes de que Cypress ejecute
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  cypress:
+    image: cypress/included:13.13.1
+    depends_on:
+      frontend:
+        condition: service_healthy
+    volumes:
+      - .:/e2e
+    working_dir: /e2e
+    entrypoint: ["npx", "cypress", "run"]
+    environment:
+      - CYPRESS_baseUrl=http://frontend:3000

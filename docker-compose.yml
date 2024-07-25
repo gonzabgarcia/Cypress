@@ -1,16 +1,8 @@
 services:
-  frontend:
-    image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest  # Usa la imagen ya construida y subida al DockerHub
-    ports:
-      - "3000:3000"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
-
   cypress:
-    image: cypress/included:13.13.1
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile
     depends_on:
       frontend:
         condition: service_healthy
@@ -20,3 +12,13 @@ services:
     entrypoint: ["npx", "cypress", "run"]
     environment:
       - CYPRESS_baseUrl=http://frontend:3000
+
+  frontend:
+    image: gonzalob97/frontend:latest
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      retries: 5
+      start_period: 30s

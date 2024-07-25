@@ -1,7 +1,9 @@
+version: '3.8'
+
 services:
   frontend:
     build:
-      context: ../frontend-qa-automation  # Ruta al directorio del frontend
+      context: ../frontend-qa-automation  # Path to the frontend directory
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -17,7 +19,7 @@ services:
       frontend:
         condition: service_healthy
     volumes:
-      - .:/e2e
+      - ./e2e:/e2e
     working_dir: /e2e
     entrypoint: ["npx", "cypress", "run"]
     environment:

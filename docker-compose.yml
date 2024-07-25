@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ../frontend-qa-automation  # Path to the frontend directory
+      context: https://github.com/gonzabgarcia/frontend-qa-automation  # Path to the frontend directory
       dockerfile: Dockerfile
     ports:
       - "3000:3000"

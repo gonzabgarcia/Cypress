@@ -5,10 +5,6 @@ node_modules/
 cypress/videos/
 cypress/screenshots/
 
-# Build output
-dist/
-build/
-
 # Log files
 *.log
 

@@ -1,5 +1,5 @@
 # Dockerfile for Cypress
-FROM cypress/included:14.0.0
+FROM cypress/included:13.13.1
 
 WORKDIR /e2e
 

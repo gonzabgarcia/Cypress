@@ -1,12 +1,11 @@
-version: '2.29.1'  # Ajusta la versión si es necesario
+version: '2.29.1'
 
 services:
   frontend:
     build:
-      context: ../frontend-qa-automation  # Ajusta la ruta si es necesario
+      context: ../frontend-qa-automation  # Ruta relativa al directorio del repositorio de Cypress
     ports:
       - "3000:3000"
-    # Espera a que el frontend esté listo antes de que Cypress ejecute
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 10s

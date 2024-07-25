@@ -1,34 +1,43 @@
 services:
   frontend:
-    build:
-      context: https://github.com/gonzabgarcia/frontend-qa-automation
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    # Healthcheck configuration for the frontend service
     healthcheck:
+      # Command to check if the service is healthy
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      # Time between running the check (10 seconds)
       interval: 10s
+      # Number of retries before considering the service as unhealthy
       retries: 5
+      # Start period before the health check starts (30 seconds)
       start_period: 30s
     deploy:
       resources:
         limits:
+          # Limit the CPU usage to 0.50 cores
           cpus: '0.50'
+          # Limit the memory usage to 512MB
           memory: 512M
 
   cypress:
+    # Use the official Cypress Docker image
     image: cypress/included:13.13.1
     depends_on:
+      # Cypress service depends on the frontend service being healthy
       frontend:
         condition: service_healthy
     volumes:
+      # Mount the local e2e directory to the container's /e2e directory
       - ./e2e:/e2e
     working_dir: /e2e
+    # Command to run Cypress tests
     entrypoint: ["npx", "cypress", "run"]
     environment:
+      # Set the base URL for Cypress tests to the frontend service
       - CYPRESS_baseUrl=http://frontend:3000
     deploy:
       resources:
         limits:
+          # Limit the CPU usage to 0.50 cores
           cpus: '0.50'
+          # Limit the memory usage to 512MB
           memory: 512M

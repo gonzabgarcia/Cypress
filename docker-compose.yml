@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+    image: $${{ secrets.DOCKER_USERNAME }}/frontend:latest  # Usa la imagen ya construida y subida al DockerHub
     ports:
       - "3000:3000"
     healthcheck:

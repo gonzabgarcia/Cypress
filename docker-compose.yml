@@ -1,8 +1,6 @@
 services:
   frontend:
-    build:
-      context: https://github.com/gonzabgarcia/frontend-qa-automation
-      dockerfile: Dockerfile
+    image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
     ports:
       - "3000:3000"
     healthcheck:
@@ -10,11 +8,6 @@ services:
       interval: 10s
       retries: 5
       start_period: 30s
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
 
   cypress:
     image: cypress/included:13.13.1
@@ -22,13 +15,8 @@ services:
       frontend:
         condition: service_healthy
     volumes:
-      - ./e2e:/e2e
+      - .:/e2e
     working_dir: /e2e
     entrypoint: ["npx", "cypress", "run"]
     environment:
       - CYPRESS_baseUrl=http://frontend:3000
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M

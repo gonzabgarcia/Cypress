@@ -1,14 +1,14 @@
 # Dockerfile for Cypress
-FROM cypress/included:13.13.1
+FROM cypress/included:14.0.0
 
 WORKDIR /e2e
 
-# Install dependencies
+# Copia el archivo de configuración de Cypress y otros archivos necesarios
 COPY package*.json ./
 RUN npm install
 
-# Copy all files
+# Copia todos los archivos del proyecto de pruebas
 COPY . .
 
-# Default command to run tests
+# Comando por defecto para ejecutar las pruebas
 CMD ["npx", "cypress", "run"]

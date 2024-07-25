@@ -1,9 +1,10 @@
-version: '2.29.1'  # Ajusta la versión si es necesario
+version: '2.29.1'  # Asegúrate de usar una versión compatible
 
 services:
   frontend:
     build:
-      context: ../frontend-qa-automation  # Ajusta la ruta a tu contexto de construcción
+      context: ../frontend-qa-automation  # Ruta al directorio del frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     healthcheck:
@@ -13,7 +14,7 @@ services:
       start_period: 30s
 
   cypress:
-    image: cypress/included:13.13.1
+    image: cypress/included:14.0.0
     depends_on:
       frontend:
         condition: service_healthy

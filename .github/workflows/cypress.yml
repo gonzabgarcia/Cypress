@@ -1,6 +1,9 @@
 name: Run Cypress Tests
 
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows: ["Build and Push Frontend Docker Image"]
     types:
@@ -36,7 +39,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and run Docker containers
+      - name: Check if Frontend is Running
+        id: check_frontend
+        run: |
+          if docker ps -q -f name=frontend | grep -q .; then
+            echo "Frontend is already running"
+            echo "FRONTEND_RUNNING=true" >> $GITHUB_ENV
+          else
+            echo "Frontend is not running"
+            echo "FRONTEND_RUNNING=false" >> $GITHUB_ENV
+          fi
+
+      - name: Build and run Docker containers if Frontend is not running
+        if: ${{ env.FRONTEND_RUNNING == 'false' }}
         run: |
           docker-compose -f docker-compose.yml up -d
 
@@ -47,4 +62,5 @@ jobs:
         run: docker-compose run cypress npx cypress run
 
       - name: Stop Docker containers
+        if: ${{ env.FRONTEND_RUNNING == 'false' }}
         run: docker-compose down

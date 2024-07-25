@@ -1,4 +1,4 @@
-version: '3.9'  # Ajusta la versión si es necesario
+version: '2.29.1'  # Ajusta la versión si es necesario
 
 services:
   frontend:

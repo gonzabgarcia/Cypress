@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   frontend:
     build:
-      context: https://github.com/gonzabgarcia/frontend-qa-automation  # Path to the frontend directory
+      context: https://github.com/gonzabgarcia/frontend-qa-automation
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -12,6 +10,11 @@ services:
       interval: 10s
       retries: 5
       start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
 
   cypress:
     image: cypress/included:13.13.1
@@ -24,3 +27,8 @@ services:
     entrypoint: ["npx", "cypress", "run"]
     environment:
       - CYPRESS_baseUrl=http://frontend:3000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M

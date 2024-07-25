@@ -9,6 +9,7 @@ module.exports = defineConfig({
       } catch (error) {
         console.error('Error setting up plugins:', error);
       }
+
       // Retorna la configuración
       return config;
     },

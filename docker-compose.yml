@@ -1,11 +1,11 @@
-version: '3.9'
+version: '3.9'  # Ajusta la versión si es necesario
 
 services:
   frontend:
-    image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest  # Usa la imagen ya construida y subida al DockerHub
+    build:
+      context: ../frontend-qa-automation  # Ajusta la ruta a tu contexto de construcción
     ports:
       - "3000:3000"
-    # Espera a que el frontend esté listo antes de que Cypress ejecute
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 10s

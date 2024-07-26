@@ -17,7 +17,7 @@ services:
       frontend:
         condition: service_healthy
     volumes:
-      - ./cypress:/e2e  # Monta el directorio de Cypress
+      - .:/e2e  # Monta el directorio de Cypress
     working_dir: /e2e
     entrypoint: ["npx", "cypress", "run"]
     environment:

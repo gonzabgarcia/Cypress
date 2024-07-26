@@ -1,4 +1,11 @@
 {
+  "name": "cypress",
+  "version": "1.0.0",
+  "description": "Este repositorio contiene las pruebas automatizadas para la aplicación front-end utilizando Cypress. Este README proporciona instrucciones para configurar y ejecutar las pruebas en un entorno local usando Docker y Docker Compose.",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run --reporter mochawesome"
+  },
   "devDependencies": {
     "cypress": "^13.13.1",
     "cypress-mochawesome-reporter": "^3.8.2",
@@ -7,7 +14,6 @@
     "mochawesome-report-generator": "^6.2.0",
     "prettier": "^3.3.3"
   },
-  "scripts": {
-    "test": "cypress run --reporter mochawesome"
-  }
+  "author": "Your Name",
+  "license": "MIT"
 }

@@ -1,3 +1,4 @@
+# Dockerfile for Cypress
 FROM cypress/included:13.13.1
 
 USER root
@@ -7,15 +8,13 @@ RUN apt-get update && apt-get install -y xvfb
 
 WORKDIR /e2e
 
-# Copiar el archivo de configuración de Cypress
+# Copia el archivo de configuración de Cypress y otros archivos necesarios
 COPY cypress.config.js /e2e/cypress.config.js
-
-# Instalar dependencias
-COPY package*.json ./
+COPY package*.json /e2e/
 RUN npm install
 
-# Copiar todos los archivos de prueba
-COPY . .
+# Copia todos los archivos de prueba
+COPY cypress /e2e/cypress
 
 # Comando por defecto para ejecutar las pruebas
 CMD ["npx", "cypress", "run"]

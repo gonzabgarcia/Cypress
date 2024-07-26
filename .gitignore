@@ -9,8 +9,6 @@ yarn.lock
 cypress/videos/
 cypress/screenshots/
 cypress/reports/
-cypress/fixtures/
-cypress/support/
 
 # Docker
 *.log

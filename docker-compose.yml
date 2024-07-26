@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: gonzalog97/frontend:latest
+    image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
     ports:
       - "3000:3000"
     healthcheck:
@@ -10,14 +10,12 @@ services:
       start_period: 30s
 
   cypress:
-    build:
-      context: .  # Usa el contexto de construcción correcto
-      dockerfile: dockerfile
+    image: cypress/included:13.13.1
     depends_on:
       frontend:
         condition: service_healthy
     volumes:
-      - .:/e2e  # Monta el directorio de Cypress
+      - .:/e2e
     working_dir: /e2e
     entrypoint: ["npx", "cypress", "run"]
     environment:

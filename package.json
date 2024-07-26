@@ -4,7 +4,11 @@
   "description": "Este repositorio contiene las pruebas automatizadas para la aplicación front-end utilizando Cypress. Este README proporciona instrucciones para configurar y ejecutar las pruebas en un entorno local usando Docker y Docker Compose.",
   "main": "cypress.config.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1"
+=======
+    "test": "cypress run --reporter mochawesome"
+>>>>>>> 1a13256eeb844eac5139896280a632660cf18ab3
   },
   "keywords": [],
   "author": "",

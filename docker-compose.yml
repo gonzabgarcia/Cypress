@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   frontend:
     image: gonzalog97/frontend:latest
@@ -13,14 +11,14 @@ services:
 
   cypress:
     build:
-      context: .
-      dockerfile: Dockerfile.cypress
+      context: ./  # Directorio raíz del proyecto Cypress
+      dockerfile: dockerfile  # Ruta relativa al Dockerfile
     depends_on:
       frontend:
         condition: service_healthy
     volumes:
-      - F:\QA Automation Portfolio\Cypress:/e2e  # Monta el directorio correcto
-    working_dir: /e2e
+      - ./cypress:/e2e  # Monta el directorio cypress en /e2e
+    working_dir: /e2e  # El directorio de trabajo dentro del contenedor
     entrypoint: ["npx", "cypress", "run"]
     environment:
       - CYPRESS_baseUrl=http://localhost:3000

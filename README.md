@@ -1,13 +1,16 @@
-# Front-End Application
+# Cypress QA Automation
 
-Este repositorio contiene la aplicación front-end construida con Node.js. Este README proporciona instrucciones para construir y ejecutar la aplicación en un entorno local usando Docker y Docker Compose.
+Este repositorio contiene las pruebas automatizadas para la aplicación front-end utilizando Cypress. Este README proporciona instrucciones para configurar y ejecutar las pruebas en un entorno local usando Docker y Docker Compose.
 
 ## Estructura del Repositorio
 
-- **Dockerfile**: Contiene las instrucciones para construir la imagen Docker del front-end.
-- **docker-compose.yml**: Configuración de Docker Compose para ejecutar el contenedor del front-end.
+- **Dockerfile**: Contiene las instrucciones para construir la imagen Docker de Cypress.
+- **docker-compose.yml**: Configuración de Docker Compose para ejecutar las pruebas de Cypress.
+- **cypress/**: Contiene la configuración y los archivos de prueba de Cypress.
+  - **e2e/**: Contiene las pruebas end-to-end.
+  - **support/**: Contiene el archivo de soporte para comandos globales y configuraciones adicionales.
 - **package.json**: Contiene las dependencias del proyecto.
-- **.github/workflows/build.yml**: Configuración del workflow de GitHub Actions para construir y subir la imagen Docker.
+- **cypress.config.js**: Configuración de Cypress para especificar el `baseUrl`, patrones de archivos de prueba, y opciones de reporte.
 
 ## Requisitos
 
@@ -19,27 +22,23 @@ Este repositorio contiene la aplicación front-end construida con Node.js. Este 
 1. **Clona el repositorio:**
 
     ```bash
-    git clone https://github.com/gonzabgarcia/frontend-qa-automation.git
-    cd frontend-qa-automation
+    git clone https://github.com/gonzabgarcia/Cypress.git
+    cd Cypress
     ```
 
-2. **Construye la imagen Docker:**
+2. **Construye y levanta los contenedores:**
 
     ```bash
-    docker-compose build frontend
+    docker-compose up -d --build
     ```
 
-3. **Levanta el contenedor:**
+3. **Ejecuta las pruebas de Cypress:**
 
     ```bash
-    docker-compose up -d
+    docker-compose run cypress
     ```
 
-4. **Accede a la aplicación en el navegador:**
-
-    La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
-
-5. **Para detener el contenedor:**
+4. **Para detener los contenedores:**
 
     ```bash
     docker-compose down
@@ -47,23 +46,22 @@ Este repositorio contiene la aplicación front-end construida con Node.js. Este 
 
 ## Configuración
 
-El archivo `Dockerfile` define la imagen Docker para el front-end:
+El archivo `Dockerfile` define la imagen Docker para Cypress:
 
-- **Imagen base**: Node.js 22.
-- **Directorio de trabajo**: `/app`.
-- **Puerto expuesto**: 3000.
-- **Comando de inicio**: `npm start`.
+- **Imagen base**: Node.js 22 con Cypress instalado.
+- **Directorio de trabajo**: `/e2e`.
+- **Comando de inicio**: `npx cypress run`.
 
-El archivo `docker-compose.yml` configura el servicio del front-end y define un `healthcheck` para asegurar que el servicio esté completamente disponible.
+El archivo `docker-compose.yml` configura el servicio de Cypress y define un `depends_on` para asegurar que el front-end esté en un estado saludable antes de ejecutar las pruebas. También incluye un `healthcheck` para verificar que el contenedor del front-end esté completamente operativo.
 
 ## GitHub Actions
 
 El workflow en GitHub Actions realiza las siguientes tareas:
 
-1. **Construye la imagen Docker** cuando se realiza un push a la rama `main`.
-2. **Publica la imagen en Docker Hub** usando las credenciales configuradas en los secrets.
+1. **Ejecuta las pruebas de Cypress** cuando se realiza un push a la rama `main`.
+2. **Verifica si el contenedor del front-end está funcionando** y, si no lo está, levanta los contenedores necesarios.
 
-Para más detalles, consulta `.github/workflows/build.yml`.
+Para más detalles, consulta `.github/workflows/cypress.yml`.
 
 ## Contribuciones
 

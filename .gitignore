@@ -1,19 +1,30 @@
-# Ignorar dependencias y archivos generados
+# Node.js modules
 node_modules/
-npm-debug.log
-yarn-error.log
 
-# Ignorar logs y archivos temporales
-*.log
-*.pid
-*.pid.lock
-
-# Ignorar archivos generados por Cypress
+# Cypress artifacts
 cypress/videos/
 cypress/screenshots/
+cypress/fixtures/
 
-# Ignorar archivos específicos del sistema y del IDE
-.DS_Store
-Thumbs.db
+# Mochawesome report
+cypress/reports/
+
+# Archivos de configuración y logs generados
+*.log
+*.json
+
+# Configuraciones específicas del IDE
 .vscode/
 .idea/
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de construcción
+build/
+dist/
+
+# Archivos temporales
+tmp/
+temp/

@@ -1,20 +1,8 @@
-services:
-  cypress:
-    build:
-      context: .
-      dockerfile: dockerfile/Dockerfile
-    depends_on:
-      frontend:
-        condition: service_healthy
-    volumes:
-      - .:/e2e
-    working_dir: /e2e
-    entrypoint: ["npx", "cypress", "run"]
-    environment:
-      - CYPRESS_baseUrl=http://frontend:3000
+version: '3.9'
 
+services:
   frontend:
-    image: gonzalob97/frontend:latest
+    image: gonzalog97/frontend:latest
     ports:
       - "3000:3000"
     healthcheck:
@@ -22,3 +10,17 @@ services:
       interval: 10s
       retries: 5
       start_period: 30s
+
+  cypress:
+    build:
+      context: .
+      dockerfile: Dockerfile.cypress
+    depends_on:
+      frontend:
+        condition: service_healthy
+    volumes:
+      - F:\QA Automation Portfolio\Cypress:/e2e  # Monta el directorio correcto
+    working_dir: /e2e
+    entrypoint: ["npx", "cypress", "run"]
+    environment:
+      - CYPRESS_baseUrl=http://localhost:3000

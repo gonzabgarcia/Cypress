@@ -12,7 +12,7 @@ module.exports = defineConfig({
     },
     baseUrl: 'http://localhost:3000',
     specPattern: 'cypress/e2e/**/*.cy.js',
-    supportFile: 'cypress/support/index.js',
+    supportFile: 'cypress/support/commands.js',
     viewportWidth: 1280,
     viewportHeight: 720,
   },
